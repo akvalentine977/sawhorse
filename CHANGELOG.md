@@ -4,6 +4,10 @@ All notable changes to Sawhorse are recorded here. The format follows [Keep a Ch
 
 ## [Unreleased]
 
+### Added (Back, Left and Bottom views, 2026-11-05)
+
+- **Back, Left and Bottom standard views**, on the View menu ("Back view", "Left view", "Bottom view"). Each is a square, parallel view framed like the others: Back looks along -Y, Left along +X, and Bottom looks up from below with +Y up the screen (the plan seen through the floor, so +X runs left). The top bar keeps its five buttons; a menu view lights none of them. `ViewId`, `VIEWS` and `VIEW_DIRS` in `src/viewport/camera.ts` carry the three, and `BAR_VIEWS` is the bar's five. The README's "not yet" list loses its Back and Bottom line.
+- Tests: `src/viewport/camera.test.ts` (the eight views, the bar's five, every direction, opposite pairs, up square to direction); `e2e/navigation.spec.ts` (each menu view sets the view and a parallel projection with no bar button pressed).
 ### Fixed (Linux: a Save As name without its extension gets it, 2026-11-05)
 
 - **A file saved without typing `.shz` is saved as `.shz`.** On Linux the desktop app's Save dialog (GTK's file chooser) hands the name back exactly as typed: `cabinet` stayed `cabinet`, a valid document the Open dialog's "Supported files" filter then hid. Windows and macOS add the filter's extension in the dialog itself, so only Linux saw it. A name without one of the type's extensions now gets the type's first (`cabinet` to `cabinet.shz`, `cabinet.v2` to `cabinet.v2.shz`, for exports too: `part` to `part.stl`; `Cabinet.SHZ` stays), and the shell accepts the path as the chosen one less its added extension, then allows it by its full name for the saves and reads that follow (`withExtension` in `src/io/files.ts`; `save_file_atomic` in `src-tauri/src/lib.rs`; `without_added_extension` in `sawhorse-safe-save`). Found on Linux (the 0.1.0-alpha.4 .deb) by scripting the app under Xvfb.
